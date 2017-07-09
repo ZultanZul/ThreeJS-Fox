@@ -8,7 +8,7 @@ window.addEventListener('load', init, false);
 
 var scene,
 		camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
-		renderer, container, clock;
+		renderer, container, clock, controls;
 
 clock = new THREE.Clock();
 
@@ -40,6 +40,7 @@ function createScene() {
 	container = document.getElementById('world');
 	container.appendChild(renderer.domElement);
 	window.addEventListener('resize', handleWindowResize, false);
+	controls = new THREE.OrbitControls(camera, renderer.domElement);
 }
 
 function handleWindowResize() {
