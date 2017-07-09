@@ -16,11 +16,7 @@ function createScene() {
 
 	HEIGHT = window.innerHeight;
 	WIDTH = window.innerWidth;
-
-	// Create the scene
 	scene = new THREE.Scene();
-	
-	// Create the camera
 	aspectRatio = WIDTH / HEIGHT;
 	fieldOfView = 60;
 	nearPlane = 1;
@@ -31,31 +27,22 @@ function createScene() {
 		nearPlane,
 		farPlane
 		);
-	
-	// Set the position of the camera
 	camera.position.x = 0;
 	camera.position.z = 300;
 	camera.position.y = 0;
-
 	renderer = new THREE.WebGLRenderer({ 
-
 		alpha: true, 
 		antialias: true 
 	});
 
-
 	renderer.setSize(WIDTH, HEIGHT);
-
 	renderer.shadowMap.enabled = true;
-
 	container = document.getElementById('world');
 	container.appendChild(renderer.domElement);
-
 	window.addEventListener('resize', handleWindowResize, false);
 }
 
 function handleWindowResize() {
-	// update height and width of the renderer and the camera
 	HEIGHT = window.innerHeight;
 	WIDTH = window.innerWidth;
 	renderer.setSize(WIDTH, HEIGHT);
@@ -68,31 +55,21 @@ var hemisphereLight, shadowLight;
 function createLights() {
 	hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, .9)
 	shadowLight = new THREE.DirectionalLight(0xffffff, .9);
-
 	shadowLight.position.set(150, 350, 350);
-
 	shadowLight.castShadow = true;
-
-	// define the visible area of the projected shadow
 	shadowLight.shadow.camera.left = -400;
 	shadowLight.shadow.camera.right = 400;
 	shadowLight.shadow.camera.top = 400;
 	shadowLight.shadow.camera.bottom = -400;
 	shadowLight.shadow.camera.near = 1;
 	shadowLight.shadow.camera.far = 1000;
-
-	// define the resolution of the shadow; the higher the better, 
-	// but also the more expensive and less performant
 	shadowLight.shadow.mapSize.width = 2048;
 	shadowLight.shadow.mapSize.height = 2048;
-	
-	// to activate the lights, just add them to the scene
 	scene.add(hemisphereLight);  
 	scene.add(shadowLight);
 }
 
-
-var Model = function() {
+var Fox = function() {
 	
 	this.mesh = new THREE.Object3D();
 	
@@ -236,18 +213,13 @@ var Model = function() {
 };
 
 
-
-
-
-
-
-var model;
+var fox;
 
 function createModel(){ 
-	model = new Model();
-	model.mesh.scale.set(.25,.25,.25);
-	model.mesh.rotation.y = -Math.PI/4 ;
-	scene.add(model.mesh);
+	fox = new Fox();
+	fox.mesh.scale.set(.25,.25,.25);
+	fox.mesh.rotation.y = -Math.PI/4 ;
+	scene.add(fox.mesh);
 }
 
 function init() {
@@ -269,33 +241,32 @@ function loop(){
  //        model.mesh.position.y = Math.sin(Date.now() * 0.005) + 100 ;
  //    }
 
-	if ( model.mesh) {
-        model.mesh.rotation.z = Math.sin(Date.now() * 0.005) * Math.PI * 0.08 ;
+	if ( fox.mesh) {
+        fox.mesh.rotation.z = Math.sin(Date.now() * 0.005) * Math.PI * 0.08 ;
     }
 
-	if ( model.legFR) {
-        model.legFR.rotation.z = Math.sin(Date.now() * 0.005 + 1.2) * Math.PI * 0.3 ;
+	if ( fox.legFR) {
+        fox.legFR.rotation.z = Math.sin(Date.now() * 0.005 + 1.2) * Math.PI * 0.3 ;
     }
-   if ( model.legBR) {
-        model.legBR.rotation.z = Math.sin(Date.now() * 0.005) * Math.PI * 0.3 ;
-    }
-
-   if ( model.legFL) {
-        model.legFL.rotation.z = Math.sin(Date.now() * 0.005 + 1.2) * -(Math.PI * 0.3) ;
+   if ( fox.legBR) {
+        fox.legBR.rotation.z = Math.sin(Date.now() * 0.005) * Math.PI * 0.3 ;
     }
 
-    if ( model.legBL) {
-        model.legBL.rotation.z = Math.sin(Date.now() * 0.005) * -Math.PI * 0.3 ;
+   if ( fox.legFL) {
+        fox.legFL.rotation.z = Math.sin(Date.now() * 0.005 + 1.2) * -(Math.PI * 0.3) ;
     }
-    if ( model.tail) {
-        model.tail.rotation.z = Math.sin(Date.now() * 0.005) * (Math.PI * 0.08) + Math.PI/1.2 ;
-        model.tail.rotation.x = Math.sin(Date.now() * 0.005) * Math.PI * 0.08;
-        model.tail.rotation.y = Math.sin(Date.now() * 0.005) * Math.PI * 0.2;
+
+    if ( fox.legBL) {
+        fox.legBL.rotation.z = Math.sin(Date.now() * 0.005) * -Math.PI * 0.3 ;
     }
-    if ( model.head) {
-        model.head.rotation.z = Math.sin(Date.now() * 0.005) * -Math.PI * 0.05 ;
-       // model.head.rotation.y = Math.sin(Date.now() * 0.002) * -Math.PI * 0.05 ;
-         model.head.rotation.x = Math.sin(Date.now() * 0.005) * -Math.PI * 0.05 ;
+    if ( fox.tail) {
+        fox.tail.rotation.z = Math.sin(Date.now() * 0.005) * (Math.PI * 0.08) + Math.PI/1.2 ;
+        fox.tail.rotation.x = Math.sin(Date.now() * 0.005) * Math.PI * 0.08;
+        fox.tail.rotation.y = Math.sin(Date.now() * 0.005) * Math.PI * 0.2;
+    }
+    if ( fox.head) {
+        fox.head.rotation.z = Math.sin(Date.now() * 0.005) * -Math.PI * 0.05 ;
+         fox.head.rotation.x = Math.sin(Date.now() * 0.005) * -Math.PI * 0.05 ;
     }
 	// call the loop function again
 	requestAnimationFrame(loop);
