@@ -218,9 +218,29 @@ var fox;
 
 function createModel(){ 
 	fox = new Fox();
-	fox.mesh.scale.set(.25,.25,.25);
+	fox.mesh.scale.set(.6,.6,.6);
 	fox.mesh.rotation.y = -Math.PI/4 ;
 	scene.add(fox.mesh);
+}
+
+function animFox() {
+
+        fox.mesh.rotation.z = Math.sin(Date.now() * 0.005) * Math.PI * 0.08 ;
+
+        fox.legFR.rotation.z = Math.sin(Date.now() * 0.005 + 1.2) * Math.PI * 0.3 ;
+
+        fox.legBR.rotation.z = Math.sin(Date.now() * 0.005) * Math.PI * 0.3 ;
+
+        fox.legFL.rotation.z = Math.sin(Date.now() * 0.005 + 1.2) * -(Math.PI * 0.3) ;
+
+        fox.legBL.rotation.z = Math.sin(Date.now() * 0.005) * -Math.PI * 0.3 ;
+
+        fox.tail.rotation.z = Math.sin(Date.now() * 0.005) * (Math.PI * 0.08) + Math.PI/1.2 ;
+        fox.tail.rotation.x = Math.sin(Date.now() * 0.005) * Math.PI * 0.08;
+        fox.tail.rotation.y = Math.sin(Date.now() * 0.005) * Math.PI * 0.2;
+
+        fox.head.rotation.z = Math.sin(Date.now() * 0.005) * -Math.PI * 0.05 ;
+         fox.head.rotation.x = Math.sin(Date.now() * 0.005) * -Math.PI * 0.05 ;
 }
 
 function init() {
@@ -232,43 +252,8 @@ function init() {
 
 function loop(){
 
-
-	//model.mesh.rotation.y +=0.02;
-
-
+	animFox();
 	renderer.render(scene, camera);
-
-	// if ( model.mesh) {
- //        model.mesh.position.y = Math.sin(Date.now() * 0.005) + 100 ;
- //    }
-
-	if ( fox.mesh) {
-        fox.mesh.rotation.z = Math.sin(Date.now() * 0.005) * Math.PI * 0.08 ;
-    }
-
-	if ( fox.legFR) {
-        fox.legFR.rotation.z = Math.sin(Date.now() * 0.005 + 1.2) * Math.PI * 0.3 ;
-    }
-   if ( fox.legBR) {
-        fox.legBR.rotation.z = Math.sin(Date.now() * 0.005) * Math.PI * 0.3 ;
-    }
-
-   if ( fox.legFL) {
-        fox.legFL.rotation.z = Math.sin(Date.now() * 0.005 + 1.2) * -(Math.PI * 0.3) ;
-    }
-
-    if ( fox.legBL) {
-        fox.legBL.rotation.z = Math.sin(Date.now() * 0.005) * -Math.PI * 0.3 ;
-    }
-    if ( fox.tail) {
-        fox.tail.rotation.z = Math.sin(Date.now() * 0.005) * (Math.PI * 0.08) + Math.PI/1.2 ;
-        fox.tail.rotation.x = Math.sin(Date.now() * 0.005) * Math.PI * 0.08;
-        fox.tail.rotation.y = Math.sin(Date.now() * 0.005) * Math.PI * 0.2;
-    }
-    if ( fox.head) {
-        fox.head.rotation.z = Math.sin(Date.now() * 0.005) * -Math.PI * 0.05 ;
-         fox.head.rotation.x = Math.sin(Date.now() * 0.005) * -Math.PI * 0.05 ;
-    }
 	// call the loop function again
 	requestAnimationFrame(loop);
 }
