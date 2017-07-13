@@ -2,6 +2,8 @@ var Colors = {
 	red:0xf25346,
 	white:0xd8d0d1,
 	brown:0x59332e,
+	lightBrown:0x895e39,
+	lightGrey:0xe3e3e3,
 };
 
 window.addEventListener('load', init, false);
@@ -70,11 +72,11 @@ function createLights() {
 	scene.add(shadowLight);
 }
 
-var Fox = function() {
+var Fox = function(foxColor) {
 	
 	this.mesh = new THREE.Object3D();
 	
-	var redFurMat = new THREE.MeshPhongMaterial({color:Colors.red, shading:THREE.FlatShading});
+	var redFurMat = new THREE.MeshPhongMaterial({color:foxColor, shading:THREE.FlatShading});
 
 	// Create the Body
 	var geomBody = new THREE.BoxGeometry(100,50,50,1,1,1);
@@ -217,30 +219,46 @@ var Fox = function() {
 var fox;
 
 function createModel(){ 
-	fox = new Fox();
+	fox = new Fox(Colors.red);
 	fox.mesh.scale.set(.6,.6,.6);
 	fox.mesh.rotation.y = -Math.PI/4 ;
+	fox.mesh.position.x = -20;
 	scene.add(fox.mesh);
+
+	vixen = new Fox(Colors.lightGrey);
+	vixen.mesh.scale.set(.5,.5,.5);
+	vixen.mesh.rotation.y = -Math.PI/4 ;
+	vixen.mesh.position.x = 40;
+	scene.add(vixen.mesh);
+
+	pup = new Fox(Colors.lightBrown);
+	pup.mesh.scale.set(.4,.4,.4);
+	pup.mesh.rotation.y = -Math.PI/4;
+	pup.mesh.position.y = -30;
+	pup.mesh.position.x = -90;
+	pup.mesh.position.z = 0;
+	scene.add(pup.mesh);
 }
 
-function animFox() {
 
-        fox.mesh.rotation.z = Math.sin(Date.now() * 0.005) * Math.PI * 0.08 ;
 
-        fox.legFR.rotation.z = Math.sin(Date.now() * 0.005 + 1.2) * Math.PI * 0.3 ;
+function animFox(object, duration, offset) {
 
-        fox.legBR.rotation.z = Math.sin(Date.now() * 0.005) * Math.PI * 0.3 ;
+        object.mesh.rotation.z = Math.sin(Date.now() * duration + offset) * Math.PI * 0.08 ;
+        object.legFR.rotation.z = Math.sin(Date.now() * duration + 1.2 + offset) * Math.PI * 0.3 ;
 
-        fox.legFL.rotation.z = Math.sin(Date.now() * 0.005 + 1.2) * -(Math.PI * 0.3) ;
+        object.legBR.rotation.z = Math.sin(Date.now() * duration + offset) * Math.PI * 0.3 ;
 
-        fox.legBL.rotation.z = Math.sin(Date.now() * 0.005) * -Math.PI * 0.3 ;
+        object.legFL.rotation.z = Math.sin(Date.now() * duration + 1.2 + offset) * -(Math.PI * 0.3) ;
 
-        fox.tail.rotation.z = Math.sin(Date.now() * 0.005) * (Math.PI * 0.08) + Math.PI/1.2 ;
-        fox.tail.rotation.x = Math.sin(Date.now() * 0.005) * Math.PI * 0.08;
-        fox.tail.rotation.y = Math.sin(Date.now() * 0.005) * Math.PI * 0.2;
+        object.legBL.rotation.z = Math.sin(Date.now() * duration + offset) * -Math.PI * 0.3 ;
 
-        fox.head.rotation.z = Math.sin(Date.now() * 0.005) * -Math.PI * 0.05 ;
-         fox.head.rotation.x = Math.sin(Date.now() * 0.005) * -Math.PI * 0.05 ;
+        object.tail.rotation.z = Math.sin(Date.now() * duration + offset) * (Math.PI * 0.08) + Math.PI/1.2 ;
+        object.tail.rotation.x = Math.sin(Date.now() * duration + offset) * Math.PI * 0.08;
+        object.tail.rotation.y = Math.sin(Date.now() * duration + offset) * Math.PI * 0.2;
+
+        object.head.rotation.z = Math.sin(Date.now() * duration + offset) * -Math.PI * 0.05 ;
+        object.head.rotation.x = Math.sin(Date.now() * duration + offset) * -Math.PI * 0.05 ;
 }
 
 function init() {
@@ -252,7 +270,10 @@ function init() {
 
 function loop(){
 
-	animFox();
+	animFox(fox,0.005, 0);
+	animFox(vixen, 0.0055, 1.2);
+	animFox(pup, 0.007, 0.7);
+
 	renderer.render(scene, camera);
 	// call the loop function again
 	requestAnimationFrame(loop);
